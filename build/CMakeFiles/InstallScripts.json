@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/prince/ressources/PATH TRACING/PBR/build/cmake_install.cmake",
+		"/home/prince/ressources/PATH TRACING/PBR/build/include/cmake_install.cmake",
+		"/home/prince/ressources/PATH TRACING/PBR/build/src/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
