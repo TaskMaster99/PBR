@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/home/prince/ressources/PATH TRACING/PBR/build",
-  "command": "/usr/bin/clang++ -I\"/home/prince/ressources/PATH TRACING/PBR/include\" -g -std=gnu++23 -O3 -Wextra -Wall -Werror -o src/CMakeFiles/pbr.exe.dir/main.cpp.o -c \"/home/prince/ressources/PATH TRACING/PBR/src/main.cpp\"",
-  "file": "/home/prince/ressources/PATH TRACING/PBR/src/main.cpp",
-  "output": "/home/prince/ressources/PATH TRACING/PBR/build/src/CMakeFiles/pbr.exe.dir/main.cpp.o"
-}
-]
