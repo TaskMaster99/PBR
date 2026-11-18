@@ -1,12 +1,15 @@
 add_library(pbr INTERFACE)
 
 set(MY_HEADERS
-  ${CMAKE_SOURCE_DIR}/include/mce.hpp
+  ${CMAKE_SOURCE_DIR}/include/integrator.hpp
   ${CMAKE_SOURCE_DIR}/include/rng.hpp
   ${CMAKE_SOURCE_DIR}/include/sampler.hpp
+  ${CMAKE_SOURCE_DIR}/include/pdf.hpp
+  ${CMAKE_SOURCE_DIR}/include/exploit.hpp
+
 )
 
-set(COMPILE_CONFIG -O3 -Wextra -Wall -Werror)
+set(COMPILE_CONFIG -O3 -Wextra -Wall -Werror -march=native)
 
 target_sources(pbr
   INTERFACE

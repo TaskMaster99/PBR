@@ -3,62 +3,53 @@
 
 #include <cmath>
 #include "rng.hpp"
+#include <numbers>
+#include <tuple>
 
 #define OF 0.2
 
 namespace PBR_ 
 {
-  
-constexpr std::double_t UniformSphereVolumPDF(const std::double_t R)
-{
-    const std::double_t R_3 = R*R*R;
-    return 3.0/(4.0*M_PI*(R_3));
-}
-
-
-
-constexpr std::double_t ImportanceSphereVolumPDF(const std::double_t r, const std::double_t R)
-{
-    const std::double_t R_5 = R*R*R*R*R;
-    return 5.0*(r*r)/(4.0*M_PI*R_5);
-}
-
-struct Sampler
+struct SampleUniformSphereVolume
 {
     public:
+    SampleUniformSphereVolume() = default;
 
-    static void SampleUniformSphereVolum(RNG&                   rng, 
-                                         const std::double_t    R, 
-                                         std::double_t * const  r, 
-                                         std::double_t * const  theta, 
-                                         std::double_t * const  phi)
+    template<typename RNGEngine>
+    auto operator()(RNGEngine&                   rng, 
+                    const std::double_t    R) const
     {
-        const std::double_t U1      = rng.randFloat(0.0, 1.0);
-        const std::double_t U2      = rng.randFloat(0.0, 1.0);
-        const std::double_t U3      = rng.randFloat(0.0, 1.0);
+        const std::double_t U1      = randFloat(rng, 0.0, 1.0);
+        const std::double_t U2      = randFloat(rng, 0.0, 1.0);
+        const std::double_t U3      = randFloat(rng, 0.0, 1.0);
 
-        *r                          = R  * std::cbrt(U1);
-        *theta                      = U2 * 2.0 * M_PI;
-        *phi                        = std::acos(1.0 - 2.0*U3);
+        const std::double_t r                          = R  * std::cbrt(U1);
+        const std::double_t theta                      = U2 * 2.0 * std::numbers::pi;
+        const std::double_t phi                        = std::acos(1.0 - 2.0*U3);
+
+        return std::make_tuple(r, theta, phi);
+
     }
+};
 
-    static void SampleImportanceSphereVolum(RNG&                   rng, 
-                                            const std::double_t    R, 
-                                            std::double_t * const  r, 
-                                            std::double_t * const  theta, 
-                                            std::double_t * const  phi)
+struct SampleImportanceSphereVolume
+{
+    public:
+    SampleImportanceSphereVolume() = default;
+    template<typename RNGEngine>
+    auto operator()(RNGEngine&           rng, 
+                    const std::double_t    R) const
     {
-        const std::double_t U1      = rng.randFloat(0.0, 1.0);
-        const std::double_t U2      = rng.randFloat(0.0, 1.0);
-        const std::double_t U3      = rng.randFloat(0.0, 1.0);
+        const std::double_t U1      = randFloat(rng, 0.0, 1.0);
+        const std::double_t U2      = randFloat(rng, 0.0, 1.0);
+        const std::double_t U3      = randFloat(rng, 0.0, 1.0);
 
-        *r                          = R  * std::pow(U1, OF);
-        *theta                      = U2 * 3.0 * M_PI;
-        *phi                        = std::acos(1.0 - 2.0*U3);
+        const std::double_t r                          = R  * std::pow(U1, OF);
+        const std::double_t theta                      = U2 * 2.0 * std::numbers::pi;
+        const std::double_t phi                        = std::acos(1.0 - 2.0*U3);
+
+        return std::make_tuple(r, theta, phi);
     }
-
-    
-
 };
 
 }
