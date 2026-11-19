@@ -6,6 +6,10 @@ set(MY_HEADERS
   ${CMAKE_SOURCE_DIR}/include/sampler.hpp
   ${CMAKE_SOURCE_DIR}/include/pdf.hpp
   ${CMAKE_SOURCE_DIR}/include/exploit.hpp
+  ${CMAKE_SOURCE_DIR}/include/image.hpp
+  ${CMAKE_SOURCE_DIR}/include/ray.hpp
+  ${CMAKE_SOURCE_DIR}/include/vecmath.hpp
+  ${CMAKE_SOURCE_DIR}/include/primitive.hpp
 
 )
 

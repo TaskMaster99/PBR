@@ -9,6 +9,22 @@ import numpy as np
 import pandas as pd
 
 
+def MSESphereSamplinglPlotting():
+    data = pd.read_csv("data/sphere_sampling.csv", sep=';')
+
+    x              = data['x']
+    y              = data['y']
+    z              = data['z']
+    fig, ax        = plt.subplots(figsize=(10,10), subplot_kw={"projection": "3d"})
+    
+    ax.scatter(xs=x, ys=y,zs=z, s=0.75, color='red')
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+    ax.set_zlabel("Z")
+    ax.set_title(f"Uniform sample of sphere with Monte Carlo Estimator")
+
+    fig.savefig("data/img/uniform_volum_sphere.png")
+
 def MSESphereIntegralPlotting():
 
     data = pd.read_csv("data/mce_sphere_integral.csv", sep=';')
@@ -52,6 +68,7 @@ def MSESphereIntegralPlotting():
 
 if __name__ == '__main__':
     MSESphereIntegralPlotting()
+    MSESphereSamplinglPlotting()
 
 
 

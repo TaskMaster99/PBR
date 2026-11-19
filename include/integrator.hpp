@@ -1,15 +1,13 @@
 #ifndef INTEGRATOR_HPP
 #define INTEGRATOR_HPP
 
-#include "sampler.hpp"
-#include <array>
+#include <sampler.hpp>
 #include <cmath>
 #include <numbers>
-#include <tuple>
-#include <utility>
-#include <thread>
+#include <span>
 
-#define MAX_ARRAY_SIZE 10000000
+
+#define MAX_POINT 10000000
 
 namespace PBR_ 
 {
@@ -64,11 +62,11 @@ struct Integrator
     }
 
     template<typename  RNGEngine>
-    IntegralResultType SphereIntegralExt(RNGEngine& g, 
-                           std::array<std::double_t, MAX_ARRAY_SIZE>& x, 
-                           std::array<std::double_t, MAX_ARRAY_SIZE>& y,
-                           std::array<std::double_t, MAX_ARRAY_SIZE>& z,
-                           const std::double_t radius)
+    IntegralResultType SphereIntegral(RNGEngine& g,
+                                      const std::double_t radius,
+                                      std::span<std::double_t> x, 
+                                      std::span<std::double_t> y,
+                                      std::span<std::double_t> z)
     {
         std::double_t pdf_value  = 0.0;
         IntegralResultType   Fn = IntegralResultType{};
