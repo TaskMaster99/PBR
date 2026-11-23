@@ -11,9 +11,7 @@ if [ ! -d "./.venv/" ]; then
     pip install requests
 
     pip install -U pandas numpy seaborn matplotlib
-    pip install scikit-learn
-    pip install jupyterlab
-    pip install jupyterlab-requirements
+    pip install Pillow
 
 else
 

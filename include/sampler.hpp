@@ -13,7 +13,7 @@ namespace PBR_
 struct SampleUniformSphereVolume
 {
     public:
-    SampleUniformSphereVolume() = default;
+    SampleUniformSphereVolume() noexcept = default;
 
     template<typename RNGEngine>
     auto operator()(RNGEngine&                   rng, 
@@ -35,7 +35,7 @@ struct SampleUniformSphereVolume
 struct SampleImportanceSphereVolume
 {
     public:
-    SampleImportanceSphereVolume() = default;
+    SampleImportanceSphereVolume() noexcept = default;
     template<typename RNGEngine>
     auto operator()(RNGEngine&           rng, 
                     const std::double_t    R) const

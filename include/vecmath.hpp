@@ -1,8 +1,7 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <cmath>
-#include <tuple>
+#include <utils.hpp>
 
 namespace PBR_ 
 {
@@ -17,7 +16,9 @@ struct Vector3
     constexpr Vector3()                 = default;
     constexpr Vector3(std::double_t a, std::double_t b, std::double_t c) : x(a), y(b), z(c) {};
     constexpr Vector3(const Vector3& u) = default;
+    constexpr Vector3(Vector3&& u) = default;
     constexpr Vector3&         operator=(const Vector3& u)             = default;
+    constexpr Vector3&         operator=(Vector3&& u)             = default;
 
     constexpr Vector3          operator+(const Vector3& u)      const {return {x+u.x , y+u.y , z+u.z};};
     constexpr Vector3&         operator+=(const Vector3& u)     
@@ -26,10 +27,9 @@ struct Vector3
         return *this;
     };
 
-    constexpr Vector3&         operator-()
+    constexpr Vector3         operator-()
     {
-        *this = {-x , -y , -z};
-        return *this;
+        return {-x , -y , -z};
     };
 
     constexpr Vector3          operator-(const Vector3& u)      const {return {x-u.x , y-u.y , z-u.z};};
@@ -63,7 +63,8 @@ constexpr std::double_t magnitude(const Vector3& u)
 
 constexpr Vector3 normalize(const Vector3& u)
 {
-    return u/magnitude(u);
+    std::double_t len = magnitude(u);
+    return len > EPSILONv5 ? u/len : u;
 }
 
 constexpr Vector3 cross(const Vector3& u1, const Vector3& u2)        
@@ -71,27 +72,29 @@ constexpr Vector3 cross(const Vector3& u1, const Vector3& u2)
     return 
     {
             u1.y * u2.z - u1.z * u2.y, 
-            u1.x * u2.z - u1.z * u2.x, 
+            u1.z * u2.x - u1.x * u2.z, 
             u1.x * u2.y - u1.y * u2.x
     };
 }
 
 constexpr auto CoordinateSystem(const Vector3& u1)                           
 {
-    std::double_t uz_1 = 1.0/(1.0 + u1.z);
-    std::double_t uxy = u1.x*u1.y;
+    std::double_t sign = copysign(1.0, u1.z);
+    std::double_t a = -1.0/(sign + u1.z);
+    std::double_t b = u1.x*u1.y*a;
+
     std::double_t uxx = u1.x*u1.x;
     std::double_t uyy = u1.y*u1.y;
 
-    Vector3 u2 = {1.0 - uxx*uz_1, - uxy*uz_1, - u1.x};
-    Vector3 u3 = {- uxy*uz_1, 1.0 - uyy*uz_1, - u1.y};
+    Vector3 u2 = {1.0 + sign*uxx*a, sign*b, -sign* u1.x};
+    Vector3 u3 = {b, 1.0 + sign*uyy*a, -sign * u1.y};
 
     return std::make_tuple(u2, u3);
 }
 
-constexpr Vector3 flip(const Vector3& u, Vector3& n)
+constexpr Vector3 flip(const Vector3& u, Vector3& n, const std::double_t epsilon = 0.0)
 {
-    return (u * n) < 0.0 ? -n : n;
+    return (u * n) < epsilon ? -n : n;
 };
 
 
@@ -104,7 +107,10 @@ struct Point3
     constexpr Point3()                 = default;
     constexpr Point3(std::double_t a, std::double_t b, std::double_t c) : x(a), y(b), z(c) {};
     constexpr Point3(const Point3& p)  = default;
+    constexpr Point3(Point3&& p)  = default;
+
     constexpr Point3&       operator=(const Point3& p)             = default;
+    constexpr Point3&       operator=(Point3&& p)             = default;
 
     constexpr Point3        operator+(const Vector3& u) const { return {x+u.x , y+u.y , z+u.z};};
     constexpr Point3&       operator+=(const Vector3& u)
@@ -113,7 +119,7 @@ struct Point3
         return *this;
     };
 
-
+    constexpr Point3        operator-() const { return {-x , -y , -z};};
     constexpr Point3        operator-(const Vector3& u) const { return {x-u.x , y-u.y , z-u.z};};
     constexpr Point3&       operator-=(const Vector3& u)
     {

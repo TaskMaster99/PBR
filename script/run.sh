@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./build/src/pbr.exe
+./build/src/generateFrame.exe

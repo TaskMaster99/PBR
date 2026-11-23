@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdint>
 #include <cstdlib>
+#include <color.hpp>
 
 namespace  PBR_
 {
@@ -32,12 +33,11 @@ struct Image
         b_channel = (std::uint8_t*)std::malloc(width * height * sizeof(std::uint8_t));
     }
 
-    void putPixel(std::uint64_t x, std::uint64_t y, 
-                  std::double_t r, std::double_t g, std::double_t b)
+    void putPixel(std::uint64_t x, std::uint64_t y, RGB rgb)
     {
-        r_channel[y * width + x] = static_cast<std::uint8_t>(r * 255.0);
-        g_channel[y * width + x] = static_cast<std::uint8_t>(g * 255.0);
-        b_channel[y * width + x] = static_cast<std::uint8_t>(b * 255.0);
+        r_channel[y * width + x] = static_cast<std::uint8_t>(rgb.r * 255.0);
+        g_channel[y * width + x] = static_cast<std::uint8_t>(rgb.g * 255.0);
+        b_channel[y * width + x] = static_cast<std::uint8_t>(rgb.b * 255.0);
     }
 
     void saveImg(const char* filename)

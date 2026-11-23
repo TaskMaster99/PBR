@@ -1,48 +1,59 @@
-#include "primitive.hpp"
-#include "ray.hpp"
-#include <rng.hpp>
-#include <pdf.hpp>
-#include <sampler.hpp>
-#include <exploit.hpp>
+#include <camera.hpp>
+#include <primitive.hpp>
+#include <cstdint>
 #include <image.hpp>
+#include <transform.hpp>
 
-int main() 
+int main()
 {
     PBR_::Image img;
-
-    PBR_::Sphere sph;
-
-    sph.origin = {0.0, 0.0, -1.5};
-    sph.radius = 0.5;
-    sph.r = 1.0;
-    sph.g = 0.0;
-    sph.b = 1.0;
-
-    std::double_t t;
-
-    PBR_::Ray r;
-
-    r.origin = {0.0, 0.0, -.2};
-
-    std::double_t aspect_ratio = static_cast<std::double_t>(img.width)/img.height;
-    std::double_t fov = std::tan(0.01745329251 * (90.0/2.0));
-    for(std::uint64_t y{0ULL}; y < img.height; ++y)
+    PBR_::Plane up = 
     {
-        std::double_t pixelNormalizeY = (static_cast<std::double_t>(y) + 0.5)/img.height;
-        std::double_t bg = pixelNormalizeY;
-        for(std::uint64_t x{0ULL}; x < img.width; ++x)
+      {-0.5, 0.0, -0.5}, 
+     {0.0, 0.0, -1.0}, 
+     {0.0, 1.0, 0.0}, 
+      {1.0, 1.0, 0.0}
+    };
+
+    PBR_::Camera user = {{0.0, 0.0, 2.0}};
+
+    std::double_t aspect_ratio =
+        static_cast<std::double_t>(img.width) / img.height;
+    std::double_t fov = std::tan(PBR_::radian(60.0 / 2.0));
+
+
+    PBR_::Transformation RasterToScreenSpace =
+        PBR_::ScreenFromNDC(aspect_ratio, fov) *
+        PBR_::NDCFromRaster(static_cast<std::double_t>(img.width),
+                            static_cast<std::double_t>(img.height));
+
+    PBR_::Transformation CameraToWorldSpace = PBR_::LookAt(user);
+
+    for(std::uint64_t y = 0ULL; y < img.height; ++y)
+    {
+        std::double_t shade = (static_cast<std::double_t>(y)) / img.height;
+
+        for(std::uint64_t x = 0ULL; x < img.width; ++x)
         {
-            std::double_t pixelNormalizeX = (static_cast<std::double_t>(x) + 0.5)/img.width;
-            r.direction.x = (2.0 * pixelNormalizeX - 1.0) * fov * aspect_ratio;
-            r.direction.y = (1.0 - 2.0 * pixelNormalizeY) * fov;
-            r.direction.z = -1.0;
+            PBR_::Point3 raster_coord = {static_cast<std::double_t>(x), static_cast<std::double_t>(y), -1};
+            PBR_::Point3 screen_coord = RasterToScreenSpace(raster_coord);
+            PBR_::Vector3 screen_dir
+            {
+                screen_coord.x,
+                screen_coord.y,
+                screen_coord.z
+            };
 
-            r.direction = normalize(r.direction);
+            PBR_::Ray ray{{0.0,0.0,0.0}, PBR_::normalize(screen_dir), 0.0};
 
-            if(sph.intersect(r, t)) img.putPixel(x, y, sph.r, sph.g, sph.b);
-            else img.putPixel(x, y, bg, bg, 1.);
+            ray = CameraToWorldSpace(ray);
+
+            if (intersect(up, ray))
+                img.putPixel(x, y, up.rgb);
+            else
+                img.putPixel(x, y, {shade, shade, 1.});
         }
     }
 
-    img.saveImg("render_result/test.ppm");
+    img.saveImg("plane_test.ppm");
 }

@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include <cstdint>
-#include <ctime>
 
 namespace PBR_{
 
@@ -18,10 +17,10 @@ struct LCGEngine
 
 
     LCGEngine()                                       = delete;
-    explicit LCGEngine(const std::uint64_t init_seed) : state(init_seed % modulus ? init_seed % modulus : 123456789){}
+    explicit LCGEngine(const std::uint64_t init_seed) noexcept : state(init_seed % modulus ? init_seed % modulus : 123456789){}
 
-    LCGEngine(const LCGEngine& rng)            = default;
-    LCGEngine& operator=(const LCGEngine& rng) = default;
+    LCGEngine(const LCGEngine& rng) noexcept            = default;
+    LCGEngine& operator=(const LCGEngine& rng) noexcept = default;
 
     std::uint64_t next()
     {
@@ -38,11 +37,11 @@ struct PCGEngine
     static constexpr std::uint64_t multiplier = 6364136223846793005u;
     static constexpr std::double_t normalizer = 4294967296.0;
 
-    PCGEngine()                                       : state(2 * 0xcafef00dd15ea5e5u + 1){}
-    explicit PCGEngine(const std::uint64_t init_seed) : state(2* init_seed + 1){}
+    PCGEngine()                                       : state(2 * 0xcafef00dd15ea5e5u + 1){(void)next();}
+    explicit PCGEngine(const std::uint64_t init_seed) : state(2* init_seed + 1){(void)next();}
 
-    PCGEngine(const PCGEngine& rng)            = default;
-    PCGEngine& operator=(const PCGEngine& rng) = default;
+    PCGEngine(const PCGEngine& rng)            noexcept    = default;
+    PCGEngine& operator=(const PCGEngine& rng) noexcept    = default;
 
     std::uint32_t next()
     {
@@ -56,7 +55,7 @@ struct PCGEngine
 
 
 template<typename  RNGEngine>
-std::uint64_t randInt(RNGEngine& g ,std::uint64_t minValue, std::uint64_t maxValue)
+std::int64_t randInt(RNGEngine& g ,std::int64_t minValue, std::int64_t maxValue)
 {
     std::uint64_t delta_x = maxValue - minValue + 1;
     return minValue + (g.next() % delta_x);

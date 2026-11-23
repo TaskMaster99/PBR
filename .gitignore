@@ -3,3 +3,5 @@
 data/*
 build
 render_result
+frame
+script/gif.py
