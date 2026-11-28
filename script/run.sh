@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./build/src/generateFrame.exe
+./build/src/main.exe
