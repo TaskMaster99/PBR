@@ -2,7 +2,7 @@
 #define RAY_HPP
 
 #include <cmath>
-#include <vecmath.hpp>
+#include "vecmath.hpp"
 
 namespace PBR_
 {

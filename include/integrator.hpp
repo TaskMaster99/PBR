@@ -1,10 +1,10 @@
 #ifndef INTEGRATOR_HPP
 #define INTEGRATOR_HPP
 
-#include <sampler.hpp>
 #include <cmath>
 #include <numbers>
 #include <span>
+#include <cstdint>
 
 
 #define MAX_POINT 10000000

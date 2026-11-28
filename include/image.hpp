@@ -5,7 +5,7 @@
 #include <cstdio>
 #include <cstdint>
 #include <cstdlib>
-#include <color.hpp>
+#include "color.hpp"
 
 namespace  PBR_
 {

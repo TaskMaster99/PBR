@@ -1,11 +1,11 @@
 #ifndef PRIMITIVE_HPP
 #define PRIMITIVE_HPP
 
-#include <utils.hpp>
+#include "utils.hpp"
 #include <cmath>
-#include <vecmath.hpp>
-#include <ray.hpp>
-#include <color.hpp>
+#include "vecmath.hpp"
+#include "ray.hpp"
+#include "color.hpp"
 
 namespace PBR_
 {

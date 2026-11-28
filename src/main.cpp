@@ -6,10 +6,8 @@
 #include <fstream>
 #include <chrono>
 #include <ios>
-#include <ratio>
 #include <algorithm>
 #include <numeric>
-#include <utility>
 #include <filesystem>
 #include <fcntl.h>
 #include <sys/stat.h>

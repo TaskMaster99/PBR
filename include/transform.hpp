@@ -3,14 +3,13 @@
 
 
 
-#include <ray.hpp>
+#include "ray.hpp"
 #include <cmath>
 #include <cstdint>
-#include <cstdlib>
-#include <vecmath.hpp>
+#include "vecmath.hpp"
 #include <cstdio>
-#include <camera.hpp>
-
+#include "camera.hpp"
+#include <optional>
 namespace PBR_
 {
 struct Transformation

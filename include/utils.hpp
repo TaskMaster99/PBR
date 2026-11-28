@@ -2,10 +2,7 @@
 #define UTILS_HPP
 
 #include <cmath>
-#include <cstdio>
 #include <cassert>
-#include <tuple>
-#include <optional>
 
 #define ASSERT(exp, msg) assert((void(msg), exp))
 
